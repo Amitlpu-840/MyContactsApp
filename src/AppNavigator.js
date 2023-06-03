@@ -1,8 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Contacts from './screens/Contacts';
-import ContactDetails from './screens/ContactDetails';
+import Contacts from './Screens/Contacts';
+import ContactDetails from './Screens/ContactDetails';
 const Stack = createStackNavigator();
 const AppNavigator = () => {
   return (
