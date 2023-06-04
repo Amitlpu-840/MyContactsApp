@@ -38,7 +38,7 @@ const Contacts = ({navigation}) => {
         Contact.getAll()
           .then(con => {
             // work with contacts
-            // console.log(con);
+            console.log('got contacts');
             setContactList(con);
           })
           .catch(e => {
@@ -147,7 +147,7 @@ const Contacts = ({navigation}) => {
                   }}>
                   <Image
                     source={require('../images/phoneCall2.png')}
-                    style={{width: 20, height: 20}}
+                    style={{width: 24, height: 24}}
                   />
                 </TouchableOpacity>
               </View>
