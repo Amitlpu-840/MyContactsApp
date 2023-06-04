@@ -3,11 +3,14 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  Linking,
   PermissionsAndroid,
 } from 'react-native';
 import React from 'react';
 import {useRoute} from '@react-navigation/native';
 import Contacts from 'react-native-contacts';
+import Communications from 'react-native-communications';
+
 const ContactDetails = ({navigation}) => {
   const route = useRoute();
   const getPermission = () => {
@@ -28,7 +31,7 @@ const ContactDetails = ({navigation}) => {
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: '#120E43'}}>
+    <View style={{flex: 1, backgroundColor: '#0a3d62'}}>
       <View
         style={{
           width: '100%',
@@ -48,72 +51,173 @@ const ContactDetails = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <Image
-        source={require('../images/profile.png')}
-        style={{width: 60, height: 60, marginTop: 50, alignSelf: 'center'}}
+        source={
+          route.params.data?.hasThumbnail
+            ? {uri: route.params.data?.thumbnailPath}
+            : require('../images/user.png')
+        }
+        style={{
+          width: 100,
+          height: 100,
+          marginTop: 50,
+          alignSelf: 'center',
+          borderRadius: 50,
+        }}
       />
-      <Text style={{color: '#fff', alignSelf: 'center', marginTop: 20}}>
+      <Text
+        style={{
+          color: '#fff',
+          alignSelf: 'center',
+          marginTop: 20,
+          fontSize: 40,
+          fontWeight: 'bold',
+        }}>
         {route.params.data?.displayName}
       </Text>
-      <View
-        style={{
-          flexDirection: 'row',
-          width: '100%',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 60,
-          marginTop: 50,
-        }}>
-        <Text
-          style={{
-            color: '#fff',
-            alignSelf: 'center',
-            marginTop: 20,
-            marginLeft: 20,
-          }}>
-          {route.params.data?.phoneNumbers[0]?.number}
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            paddingRight: 15,
-            alignItems: 'center',
-          }}>
-          <TouchableOpacity>
-            <Image
-              source={require('../images/message.png')}
-              style={{
-                width: 24,
-                height: 24,
-                tintColor: '#fff',
-                marginRight: 20,
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Image
-              source={require('../images/call.png')}
-              style={{width: 20, height: 20, tintColor: '#fff'}}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
       <TouchableOpacity
         style={{
-          width: '70%',
-          height: 50,
+          width: '90%',
+          height: 70,
+          alignSelf: 'center',
+          borderColor: '#079992',
+          borderRadius: 5,
+          marginTop: 30,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        onPress={() => {
+          Linking.openURL(`tel:${route.params.data?.phoneNumbers[0]?.number}`);
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            source={require('../images/phoneCall2.png')}
+            style={{
+              width: 40,
+              height: 40,
+              marginLeft: 15,
+              borderRadius: 20,
+            }}
+          />
+          <View style={{padding: 10}}>
+            <Text style={{color: '#7CFCC4', fontWeight: 'bold', fontSize: 18}}>
+              Number
+            </Text>
+            <Text style={{color: '#fff', marginTop: 4, fontSize: 12}}>
+              {route.params.data?.phoneNumbers[0]?.number}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          width: '90%',
+          height: 70,
+          alignSelf: 'center',
+          borderColor: '#079992',
+          borderRadius: 5,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        onPress={() => {
+          const phoneNumber = route.params.data?.phoneNumbers[0]?.number;
+          if (phoneNumber) {
+            const url = `sms:${phoneNumber}`;
+            Linking.canOpenURL(url)
+              .then(supported => {
+                if (supported) {
+                  return Linking.openURL(url);
+                } else {
+                  throw new Error('SMS is not supported on this device.');
+                }
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          }
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            source={require('../images/message2.png')}
+            style={{
+              width: 40,
+              height: 40,
+              marginLeft: 15,
+              borderRadius: 20,
+            }}
+          />
+          <View style={{padding: 10}}>
+            <Text style={{color: '#7CFCC4', fontWeight: 'bold', fontSize: 18}}>
+              Text
+            </Text>
+            <Text style={{color: '#fff', marginTop: 4, fontSize: 12}}>
+              {route.params.data?.phoneNumbers[0]?.number}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          width: '90%',
+          height: 70,
+          alignSelf: 'center',
+          borderBottomWidth: 0.8,
+          borderColor: '#079992',
+          // borderRadius: 5,
+          marginTop: 10,
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+        onPress={() => {
+          const email = route.params.data?.emailAddresses[0]?.email;
+          if (email) {
+            Linking.openURL(`mailto:${email}`);
+          }
+        }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Image
+            source={require('../images/mail.png')}
+            style={{
+              width: 40,
+              height: 40,
+              marginLeft: 15,
+            }}
+          />
+          <View style={{padding: 10}}>
+            <Text style={{color: '#7CFCC4', fontWeight: 'bold', fontSize: 18}}>
+              Email
+            </Text>
+            <Text style={{color: '#fff', marginTop: 4, fontSize: 12}}>
+              {route.params.data?.emailAddresses[0]
+                ? route.params.data?.emailAddresses[0]?.email
+                : `Not provided`}
+            </Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={{
+          width: '65%',
+          height: 45,
           borderRadius: 10,
-          marginTop: 100,
-          borderWidth: 1,
-
-          borderColor: 'red',
+          marginTop: 80,
+          backgroundColor: 'red',
           justifyContent: 'center',
           alignItems: 'center',
           alignSelf: 'center',
+          shadowColor: 'rgba(0, 0, 0, 0.3)',
+          shadowOffset: {width: 0, height: 2},
+          shadowOpacity: 0.5,
+          shadowRadius: 4,
+          elevation: 5,
         }}
         onPress={() => {
           getPermission();
         }}>
-        <Text style={{color: 'red'}}>Delete</Text>
+        <Text style={{color: 'white', fontSize: 20}}>Delete</Text>
       </TouchableOpacity>
     </View>
   );
