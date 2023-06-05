@@ -9,9 +9,9 @@ The MyContactApp is a mobile application developed using the React Native framew
 
 - **Contact Details**: Users can view the detailed information of a specific contact, including their profile picture, additional phone numbers, email addresses, and other relevant details.
 
-- **Add and Delete Contacts**: The app allows users to add new contacts or edit existing ones, providing a seamless way to keep their contact information up to date.
+- **Add and Delete Contacts**: The app allows users to add new contacts or delete existing ones, providing a seamless way to keep their contact information up to date.
 
-- **Search and Filter**: Users can easily search for specific contacts by name, phone number, or email address. They can also filter the contact list based on various criteria, such as favorites or recent contacts.
+- **Search and Filter**: Users can easily search for specific contacts by name or phone number.
 
 - **Call and email**: Users can initiate phone calls or send text messages to their contacts directly from within the app, providing a convenient way to communicate.
 
