@@ -67,8 +67,8 @@ const AddContact = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <Image
-        source={require('../images/profile.png')}
-        style={{width: 60, height: 60, marginTop: 50, alignSelf: 'center'}}
+        source={require('../images/user.png')}
+        style={{width: 90, height: 90, marginTop: 50, alignSelf: 'center'}}
       />
       <TextInput
         placeholder="Enter Name"
